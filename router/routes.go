@@ -2,6 +2,7 @@ package router
 
 import "net/http"
 
+//Route handles API Routing
 type Route struct {
 	Name        string
 	Method      string
@@ -9,10 +10,12 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+//RoutesV1 is an Array of routes
 type RoutesV1 []Route
 
 var routes = RoutesV1{
-	Route{"Index", "GET", "/v1/", r.Index},
-	Route{"DataIndex", "GET", "/v1/data", DataIndex},
-	Route{"DataGet", "GET", "/v1/data/{dataId}", DataGet},
+	Route{"Root", "GET", "/", Root},
+	Route{"Index", "GET", "/v1/", GetIndex},
+	Route{"DataIndex", "GET", "/v1/data", GetDataIndex},
+	Route{"DataGet", "GET", "/v1/data/{dataId}", GetData},
 }

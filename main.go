@@ -6,12 +6,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/eBayClassifiedsGroup/ammonitrix-api/build"
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/config"
 
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/router"
 )
 
-var version = "0.0.1-dev"
+//Version number
+var Version = build.Version
 
 func main() {
 	var filename string
@@ -22,12 +24,11 @@ func main() {
 	flag.Parse()
 
 	if v {
-		fmt.Println(version)
+		fmt.Println(Version)
 		return
 	}
-	log.Printf("[INFO] Version %s starting", version)
+	log.Printf("[INFO] Version %s starting", Version)
 
 	router := router.NewRouter()
-
 	log.Fatal(http.ListenAndServe(config.DefaultConfig.Listen.Port, router))
 }
