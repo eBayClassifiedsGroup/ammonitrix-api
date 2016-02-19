@@ -9,6 +9,7 @@ import (
 
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/build"
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/config"
+	"github.com/gorilla/mux"
 )
 
 //Elastic Connection Singleton
@@ -28,6 +29,7 @@ func GetIndex(w http.ResponseWriter, req *http.Request) {
 
 /*GetDataIndex lists all data and or queries them
 Can search for specific fields
+curl -XGET 'http://HOST:PORT/v1/data?key=val&key2=val2'
 */
 func GetDataIndex(w http.ResponseWriter, req *http.Request) {
 	getParams := fmt.Sprintf("GET params: %s", req.URL.Query())
@@ -51,7 +53,23 @@ func GetDataIndex(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-//GetData gets V1 data
+/*GetData gets V1 data
+curl -XGET 'http://HOST:PORT/v1/data/NAME, equivalent to curl -XGET 'http://HOST:PORT/v1/data?name=NAME'
+*/
 func GetData(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(w, "DataGet")
+	//uses gorillatoolkit lib
+	vars := mux.Vars(req)
+	dataID := string(vars["dataID"])
+	nameQuery := fmt.Sprintf("name:%s", dataID)
+	fmt.Fprintln(w, nameQuery)
+	url := fmt.Sprintf("http://%s%s/%s/_search?q=%s", Elastic.Host, Elastic.Port, Elastic.IndexName, nameQuery)
+	r, err := http.Get(url)
+	if err != nil || r.StatusCode >= 400 {
+		fmt.Fprintln(w, "[ERROR] Couldn't search Elastic")
+		log.Println("[ERROR] Couldn't search Elastic")
+	} else {
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+		fmt.Fprintln(w, string(body))
+	}
 }

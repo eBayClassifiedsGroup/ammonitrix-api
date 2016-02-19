@@ -17,5 +17,5 @@ var routes = RoutesV1{
 	Route{"Root", "GET", "/", Root},
 	Route{"Index", "GET", "/v1/", GetIndex},
 	Route{"DataIndex", "GET", "/v1/data", GetDataIndex},
-	Route{"DataGet", "GET", "/v1/data/{dataId}", GetData},
+	Route{"DataGet", "GET", "/v1/data/{dataID}", GetData},
 }
