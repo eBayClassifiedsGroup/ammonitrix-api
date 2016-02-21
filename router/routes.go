@@ -1,6 +1,9 @@
 package router
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
 
 //Route handles API Routing
 type Route struct {
@@ -18,4 +21,9 @@ var routes = RoutesV1{
 	Route{"Index", "GET", "/v1/", GetIndex},
 	Route{"DataIndex", "GET", "/v1/data", GetDataIndex},
 	Route{"DataGet", "GET", "/v1/data/{dataID}", GetData},
+}
+
+func Tracer(method, url, body string) {
+	log.Printf("Requesting %s %s", method, url)
+	log.Printf("Request body: %s", body)
 }
