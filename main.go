@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
+	//"github.com/VividCortex/godaemon" //Daemonize
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/build"
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/config"
-
 	"github.com/eBayClassifiedsGroup/ammonitrix-api/router"
 )
 
@@ -16,6 +16,7 @@ import (
 var Version = build.Version
 
 func main() {
+	//godaemon.MakeDaemon(&godaemon.DaemonAttr{})
 	var filename string
 	var v bool
 
