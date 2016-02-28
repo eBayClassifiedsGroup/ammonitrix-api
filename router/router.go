@@ -3,15 +3,15 @@ package router
 import (
 	"github.com/eBayClassifiedsGroup/ammonitrix/config"
 	"github.com/gorilla/mux"
-	"github.com/mattbaird/elastigo/lib"
+	"gopkg.in/olivere/elastic.v3"
 )
 
 //Elastic Connection
 var elasticConf = &config.DefaultConfig.Elastic
-var Elastic = elastigo.NewConn()
+var Elastic *elastic.Client
 
 func NewRouter() *mux.Router {
-	Elastic.Domain = elasticConf.Host
+	Elastic, _ = elastic.NewClient()
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		router.Methods(route.Method).Path(route.Pattern).Name(route.Name).Handler(route.HandlerFunc)
